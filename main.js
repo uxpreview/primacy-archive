@@ -505,6 +505,7 @@ const drawer = document.querySelector("#drawer");
 const detail = document.querySelector("#detail");
 const intro = document.querySelector("#intro");
 const infoButton = document.querySelector("[data-panel='info']");
+const wordmark = document.querySelector(".wordmark");
 const filterControl = document.querySelector("#filterControl");
 const filterToggle = document.querySelector("#filterToggle");
 const filterPanel = document.querySelector("#filterPanel");
@@ -1109,6 +1110,37 @@ function hideDetail() {
   requestCards();
 }
 
+function resetToIntro() {
+  if (detail.classList.contains("is-open")) hideDetail();
+  closeDrawer();
+  setFilterOpen(false);
+
+  // cancel any in-flight intro timers
+  if (introTimer) { window.clearTimeout(introTimer); introTimer = null; }
+  if (ctaTimer) { window.clearTimeout(ctaTimer); ctaTimer = null; }
+
+  // restore initial camera
+  const cam = initialCamera();
+  state.x = cam.x;
+  state.y = cam.y;
+  state.scale = cam.scale;
+  state.filterTag = null;
+
+  // wipe canvas and reset intro state
+  world.replaceChildren();
+  introComplete = false;
+
+  document.body.classList.remove("intro-done", "intro-skipped", "cta-visible", "cards-revealing");
+  document.body.classList.add("intro-active");
+
+  // push back to root without triggering hashchange
+  history.replaceState(null, "", "#/");
+
+  renderFilterPanel();
+  applyTransform();
+  scheduleCtaReveal();
+}
+
 function handleRoute() {
   const hash = window.location.hash || "#/";
   const match = hash.match(/^#\/project\/([^/]+)/);
@@ -1292,6 +1324,11 @@ window.addEventListener("keydown", (event) => {
 
 backToggle?.addEventListener("click", () => {
   window.location.hash = "#/";
+});
+
+wordmark?.addEventListener("click", (event) => {
+  event.preventDefault();
+  resetToIntro();
 });
 
 infoButton?.addEventListener("click", () => {
