@@ -202,8 +202,11 @@ body.detail-open .filter-control {
 
 /* floating back button — same slot/shape as filter button, detail pages only */
 .detail-back {
+  position: absolute;
+  left: -56px;
+  top: 50%;
+  transform: translateY(-50%);
   display: inline-flex;
-  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 40px;
@@ -214,7 +217,6 @@ body.detail-open .filter-control {
   color: var(--ink);
   cursor: pointer;
   transition: background 120ms ease;
-  margin-bottom: 6px;
 }
 
 .detail-back:hover {
@@ -995,10 +997,11 @@ body.detail-open .intro-message {
 }
 
 .detail-title-row {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 24px;
 }
 
 .detail-title-row h1 {
