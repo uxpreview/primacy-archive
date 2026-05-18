@@ -334,6 +334,24 @@ const projects = [
     accent: "oklch(0.97 0.004 95)",
     accent2: "oklch(0.84 0.16 95)",
     tags: ["Music", "Playful", "Color", "Community"]
+  },
+  {
+    id: "cornell-human-ecology",
+    title: "Cornell Human Ecology",
+    type: "poster",
+    category: "Higher Education",
+    issue: "FT. 723",
+    age: "3 weeks ago",
+    views: "1,380 views",
+    x: 3500,
+    y: 1700,
+    w: 860,
+    h: 480,
+    bg: "oklch(0.41 0.17 27)",
+    fg: "oklch(0.97 0.004 95)",
+    accent: "oklch(0.42 0.22 308)",
+    accent2: "oklch(0.72 0.17 340)",
+    tags: ["University", "Brand Platform", "Campaign", "Editorial"]
   }
 ];
 
@@ -471,6 +489,14 @@ const projectDetails = {
     stat: "38% increase in repeat listening sessions.",
     stat2: "44% increase in new registrations.",
     tags: ["Music", "Community", "Culture", "Digital Platform"]
+  },
+  "cornell-human-ecology": {
+    year: "2025",
+    url: "https://human.cornell.edu/",
+    description: "A flagship redesign for Cornell's College of Human Ecology, built around bold academic storytelling and a dynamic visual identity.",
+    stat: "38% increase in prospective student engagement.",
+    stat2: "29% improvement in program discovery.",
+    tags: ["Higher Education", "Brand Platform", "Content Strategy", "Campaign"]
   }
 };
 
@@ -490,6 +516,7 @@ const filterTags = [
   "Ecommerce",
   "Fashion",
   "Healthcare",
+  "Higher Education",
   "Hospitality",
   "Interior Design",
   "Music",
