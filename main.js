@@ -340,18 +340,21 @@ const projects = [
 const projectDetails = {
   "christopher-ireland": {
     year: "2025",
+    url: "https://christopherireland.com",
     description: "A product storytelling site for a contemporary furniture brand.",
     stat: "31% increase in product page engagement.",
     tags: ["Furniture", "Ecommerce", "Brand Platform", "Product Storytelling"]
   },
   "tomorrow-studio": {
     year: "2025",
+    url: "https://tomorrowstudio.co",
     description: "A studio portfolio built around restrained typographic storytelling.",
     stat: "24% lift in qualified inquiry starts.",
     tags: ["Creative Studio", "Portfolio", "Brand Identity", "Editorial Web"]
   },
   postevand: {
     year: "2025",
+    url: "https://postevand.com",
     description: "A publishing brand site centered on bold visual identity and media.",
     stat: "42% organic traffic increase.",
     tags: ["Publishing", "Brand System", "Content Platform", "Campaign"]
@@ -371,6 +374,7 @@ const projectDetails = {
   },
   visitors: {
     year: "2025",
+    url: "https://visitors.so",
     description: "A SaaS marketing page for revenue-focused analytics positioning.",
     stat: "42% increase in demo-qualified traffic.",
     tags: ["SaaS", "Analytics", "Product Marketing", "Demand Generation"]
@@ -383,12 +387,14 @@ const projectDetails = {
   },
   loom: {
     year: "2025",
+    url: "https://loom.com",
     description: "A collaboration product page for async video communication.",
     stat: "27% lift in trial-start conversion.",
     tags: ["SaaS", "Collaboration", "Product Launch", "B2B Marketing"]
   },
   "linear-release": {
     year: "2025",
+    url: "https://linear.app",
     description: "A release campaign site for a software product launch.",
     stat: "34% increase in feature exploration.",
     tags: ["Software", "Product Launch", "Developer Tools", "Brand Campaign"]
@@ -407,6 +413,7 @@ const projectDetails = {
   },
   "opal-camera": {
     year: "2025",
+    url: "https://opalcamera.com",
     description: "A hardware product page for a premium camera launch.",
     stat: "28% increase in preorder intent.",
     tags: ["Consumer Tech", "Hardware", "Ecommerce", "Product Launch"]
@@ -483,6 +490,8 @@ const infoButton = document.querySelector("[data-panel='info']");
 const filterControl = document.querySelector("#filterControl");
 const filterToggle = document.querySelector("#filterToggle");
 const filterPanel = document.querySelector("#filterPanel");
+const backControl = document.querySelector("#backControl");
+const backToggle = document.querySelector(".back-toggle");
 
 function initialScale() {
   return MIN_SCALE;
@@ -981,6 +990,13 @@ function renderInfoDrawer() {
 }
 
 function renderDetail(project) {
+  // capture canvas position so we can restore it on return
+  try {
+    sessionStorage.setItem("primacy.canvas.camera.v1", JSON.stringify({
+      x: state.x, y: state.y, scale: state.scale
+    }));
+  } catch {}
+
   const detailData = projectDetails[project.id] || {
     year: "2025",
     description: `A digital experience for the ${project.category.toLowerCase()} category.`,
@@ -1001,13 +1017,17 @@ function renderDetail(project) {
     )
     .join("");
 
+  const visitButton = detailData.url
+    ? `<a class="visit-button" href="${escapeHtml(detailData.url)}" target="_blank" rel="noopener noreferrer" aria-label="Visit ${escapeHtml(detailTitle)} website">Visit ${externalLinkIcon()}</a>`
+    : "";
+
   detail.innerHTML = `
     <div class="detail-stage">
       <div class="detail-preview">${renderScreen(project, { badge: false })}</div>
       <div class="detail-summary">
         <span class="year">${escapeHtml(detailData.year)}</span>
         <h1>${escapeHtml(detailTitle)}</h1>
-        <a class="visit-button" href="#/project/${project.id}/visit" aria-label="Visit ${escapeHtml(detailTitle)} externally">Visit ${externalLinkIcon()}</a>
+        ${visitButton}
         <div class="detail-impact">
           <p class="detail-description">${escapeHtml(detailData.description)}</p>
           <p class="detail-stat">${escapeHtml(detailData.stat)}</p>
@@ -1031,6 +1051,19 @@ function hideDetail() {
   detail.setAttribute("aria-hidden", "true");
   detail.innerHTML = "";
   document.body.classList.remove("detail-open");
+
+  // restore canvas camera (handles direct-URL loads where in-memory state is initial)
+  try {
+    const saved = JSON.parse(sessionStorage.getItem("primacy.canvas.camera.v1") || "null");
+    if (saved && Number.isFinite(saved.x)) {
+      state.x = saved.x;
+      state.y = saved.y;
+      state.scale = clamp(saved.scale, MIN_SCALE, MAX_SCALE);
+    }
+  } catch {}
+
+  requestFrame();
+  requestCards();
 }
 
 function handleRoute() {
@@ -1212,6 +1245,10 @@ window.addEventListener("keydown", (event) => {
 
   requestFrame();
   requestCards();
+});
+
+backToggle?.addEventListener("click", () => {
+  window.location.hash = "#/";
 });
 
 infoButton?.addEventListener("click", () => {

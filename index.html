@@ -13,7 +13,7 @@
   <body class="intro-active">
     <div id="app">
       <header class="chrome" aria-label="Site navigation">
-        <a class="wordmark" href="#/" aria-label="Return to archive">primacy.com/archive</a>
+        <a class="wordmark" href="#/" aria-label="Return to archive"><span class="back-arrow" aria-hidden="true">←</span>primacy.com/archive</a>
         <button class="info-link" type="button" data-panel="info">Info</button>
       </header>
 
@@ -46,6 +46,15 @@
             <path d="M18 6 6 18" />
           </svg>
         </button>
+      </div>
+      <div id="backControl" class="back-control">
+        <button class="back-toggle" type="button" aria-label="Back to archive">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M19 12H5" />
+            <path d="M12 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <span class="back-esc-hint" aria-hidden="true">Esc</span>
       </div>
       <aside id="drawer" class="drawer" aria-hidden="true"></aside>
       <section id="detail" class="detail-page" aria-hidden="true"></section>
