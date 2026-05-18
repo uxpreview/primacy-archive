@@ -553,6 +553,16 @@ function initialCamera() {
 
 const startCamera = initialCamera();
 
+function computeIntroWorldPos() {
+  const cam = initialCamera();
+  return {
+    x: (window.innerWidth / 2 - cam.x) / cam.scale,
+    y: (window.innerHeight / 2 - cam.y) / cam.scale
+  };
+}
+
+let introWorldPos = computeIntroWorldPos();
+
 const state = {
   x: startCamera.x,
   y: startCamera.y,
@@ -835,8 +845,10 @@ function renderScreen(project, options = {}) {
 function applyTransform() {
   world.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale})`;
   if (intro) {
-    intro.style.setProperty("--intro-x", `${window.innerWidth / 2}px`);
-    intro.style.setProperty("--intro-y", `${window.innerHeight / 2}px`);
+    const x = state.x + introWorldPos.x * state.scale;
+    const y = state.y + introWorldPos.y * state.scale;
+    intro.style.setProperty("--intro-x", `${x}px`);
+    intro.style.setProperty("--intro-y", `${y}px`);
   }
 }
 
@@ -1155,6 +1167,7 @@ function resetToIntro() {
   if (detail.classList.contains("is-open")) hideDetail();
   closeDrawer();
   setFilterOpen(false);
+  introWorldPos = computeIntroWorldPos();
 
   // cancel any in-flight intro timers
   if (introTimer) { window.clearTimeout(introTimer); introTimer = null; }
@@ -1394,6 +1407,7 @@ document.addEventListener("pointerdown", (event) => {
 });
 
 window.addEventListener("resize", () => {
+  introWorldPos = computeIntroWorldPos();
   requestFrame();
   requestCards();
 });
