@@ -552,10 +552,6 @@ function initialCamera() {
 }
 
 const startCamera = initialCamera();
-const introPosition = {
-  x: (window.innerWidth / 2 - startCamera.x) / startCamera.scale,
-  y: (window.innerHeight / 2 - startCamera.y) / startCamera.scale
-};
 
 const state = {
   x: startCamera.x,
@@ -839,10 +835,8 @@ function renderScreen(project, options = {}) {
 function applyTransform() {
   world.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale})`;
   if (intro) {
-    const x = state.x + introPosition.x * state.scale;
-    const y = state.y + introPosition.y * state.scale;
-    intro.style.setProperty("--intro-x", `${x}px`);
-    intro.style.setProperty("--intro-y", `${y}px`);
+    intro.style.setProperty("--intro-x", `${window.innerWidth / 2}px`);
+    intro.style.setProperty("--intro-y", `${window.innerHeight / 2}px`);
   }
 }
 
@@ -1134,21 +1128,24 @@ function renderDetail(project) {
 }
 
 function hideDetail() {
+  const wasOpen = detail.classList.contains("is-open");
   document.title = "Primacy Index";
   detail.classList.remove("is-open");
   detail.setAttribute("aria-hidden", "true");
   detail.innerHTML = "";
   document.body.classList.remove("detail-open");
 
-  // restore canvas camera (handles direct-URL loads where in-memory state is initial)
-  try {
-    const saved = JSON.parse(sessionStorage.getItem("primacy.canvas.camera.v1") || "null");
-    if (saved && Number.isFinite(saved.x)) {
-      state.x = saved.x;
-      state.y = saved.y;
-      state.scale = clamp(saved.scale, MIN_SCALE, MAX_SCALE);
-    }
-  } catch {}
+  // only restore camera if we were actually showing a detail page
+  if (wasOpen) {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem("primacy.canvas.camera.v1") || "null");
+      if (saved && Number.isFinite(saved.x)) {
+        state.x = saved.x;
+        state.y = saved.y;
+        state.scale = clamp(saved.scale, MIN_SCALE, MAX_SCALE);
+      }
+    } catch {}
+  }
 
   requestFrame();
   requestCards();
