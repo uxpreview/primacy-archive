@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Primacy Index</title>
+    <meta
+      name="description"
+      content="A curated web design inspiration site with an infinite 2D canvas of project homepages."
+    />
+    <link rel="stylesheet" href="styles.css?v=17" />
+  </head>
+  <body class="intro-active">
+    <div id="app">
+      <header class="chrome" aria-label="Site navigation">
+        <a class="wordmark" href="#/" aria-label="Return to archive">primacy.com/archive</a>
+        <button class="info-link" type="button" data-panel="info">Info</button>
+      </header>
+
+      <main id="viewport" class="canvas-viewport" tabindex="0" aria-label="Infinite project canvas">
+        <div class="grain" aria-hidden="true"></div>
+        <div id="world" class="canvas-world"></div>
+      </main>
+
+      <div id="intro" class="intro-message" aria-live="polite">
+        <span class="intro-text">It starts with an idea.</span>
+        <a class="intro-cta" href="mailto:hello@primacy.com?subject=Project%20idea">What's yours?</a>
+      </div>
+      <div id="filterControl" class="filter-control">
+        <div id="filterPanel" class="filter-panel" role="listbox" aria-label="Filter projects by tag"></div>
+        <button
+          id="filterToggle"
+          class="filter-toggle"
+          type="button"
+          aria-label="Filter projects"
+          aria-expanded="false"
+          aria-controls="filterPanel"
+        >
+          <svg class="filter-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16" />
+            <path d="M7 12h10" />
+            <path d="M10 17h4" />
+          </svg>
+          <svg class="close-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12" />
+            <path d="M18 6 6 18" />
+          </svg>
+        </button>
+      </div>
+      <aside id="drawer" class="drawer" aria-hidden="true"></aside>
+      <section id="detail" class="detail-page" aria-hidden="true"></section>
+    </div>
+
+    <script src="main.js?v=25"></script>
+  </body>
+</html>
