@@ -1042,6 +1042,7 @@ function renderDetail(project) {
   detail.classList.add("is-open");
   detail.setAttribute("aria-hidden", "false");
   document.body.classList.add("detail-open");
+  backControl?.classList.add("is-open");
   detail.scrollTop = 0;
 }
 
@@ -1051,6 +1052,7 @@ function hideDetail() {
   detail.setAttribute("aria-hidden", "true");
   detail.innerHTML = "";
   document.body.classList.remove("detail-open");
+  backControl?.classList.remove("is-open");
 
   // restore canvas camera (handles direct-URL loads where in-memory state is initial)
   try {
