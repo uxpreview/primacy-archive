@@ -201,83 +201,39 @@ body.detail-open .filter-control {
 }
 
 /* floating back button — same slot/shape as filter button, detail pages only */
-.back-control {
-  position: fixed;
-  z-index: 76;
-  left: 50%;
-  bottom: clamp(18px, 3.4vw, 32px);
-  transform: translateX(-50%);
-  display: grid;
-  justify-items: center;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 180ms ease,
-    visibility 180ms ease;
-}
-
-.back-control.is-open {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-
-.back-toggle {
-  position: relative;
-  display: grid;
-  width: 46px;
-  height: 46px;
-  place-items: center;
+.detail-back {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--button-bg);
+  background: transparent;
   color: var(--ink);
-  box-shadow: 0 14px 36px oklch(0.22 0.01 260 / 0.12);
   cursor: pointer;
+  transition: background 120ms ease;
+  margin-bottom: 6px;
 }
 
-.back-toggle:hover,
-.back-toggle:focus-visible {
+.detail-back:hover {
   background: var(--button-hover);
-  outline: none;
 }
 
-.back-toggle:focus-visible {
+.detail-back:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
 
-.back-toggle svg {
-  width: 20px;
-  height: 20px;
+.detail-back svg {
+  width: 18px;
+  height: 18px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1.8;
-}
-
-.back-esc-hint {
-  position: absolute;
-  bottom: 56px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 4px 9px;
-  border: 1px solid var(--line);
-  border-radius: 5px;
-  background: oklch(0.98 0.006 95 / 0.96);
-  color: var(--muted);
-  font-size: 11px;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 150ms ease;
-}
-
-.back-control:hover .back-esc-hint,
-.back-control:focus-within .back-esc-hint {
-  opacity: 1;
 }
 
 .canvas-viewport {
@@ -1040,9 +996,9 @@ body.detail-open .intro-message {
 
 .detail-title-row {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 16px;
 }
 
 .detail-title-row h1 {

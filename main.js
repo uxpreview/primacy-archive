@@ -537,8 +537,6 @@ const wordmark = document.querySelector(".wordmark");
 const filterControl = document.querySelector("#filterControl");
 const filterToggle = document.querySelector("#filterToggle");
 const filterPanel = document.querySelector("#filterPanel");
-const backControl = document.querySelector("#backControl");
-const backToggle = document.querySelector(".back-toggle");
 
 function initialScale() {
   return MIN_SCALE;
@@ -1093,6 +1091,9 @@ function renderDetail(project) {
         <span>${escapeHtml(detailData.year)}</span>
       </div>
       <div class="detail-title-row">
+        <button class="detail-back" type="button" aria-label="Back to archive">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
         <h1>${escapeHtml(detailTitle)}</h1>
         ${visitButton}
       </div>
@@ -1119,7 +1120,6 @@ function renderDetail(project) {
   detail.classList.add("is-open");
   detail.setAttribute("aria-hidden", "false");
   document.body.classList.add("detail-open");
-  backControl?.classList.add("is-open");
   detail.scrollTop = 0;
 }
 
@@ -1129,7 +1129,6 @@ function hideDetail() {
   detail.setAttribute("aria-hidden", "true");
   detail.innerHTML = "";
   document.body.classList.remove("detail-open");
-  backControl?.classList.remove("is-open");
 
   // restore canvas camera (handles direct-URL loads where in-memory state is initial)
   try {
@@ -1357,8 +1356,8 @@ window.addEventListener("keydown", (event) => {
   requestCards();
 });
 
-backToggle?.addEventListener("click", () => {
-  window.location.hash = "#/";
+detail.addEventListener("click", (event) => {
+  if (event.target.closest(".detail-back")) window.location.hash = "#/";
 });
 
 wordmark?.addEventListener("click", (event) => {
