@@ -343,6 +343,7 @@ const projectDetails = {
     url: "https://christopherireland.com",
     description: "A product storytelling site for a contemporary furniture brand.",
     stat: "31% increase in product page engagement.",
+    stat2: "18% reduction in bounce rate.",
     tags: ["Furniture", "Ecommerce", "Brand Platform", "Product Storytelling"]
   },
   "tomorrow-studio": {
@@ -350,6 +351,7 @@ const projectDetails = {
     url: "https://tomorrowstudio.co",
     description: "A studio portfolio built around restrained typographic storytelling.",
     stat: "24% lift in qualified inquiry starts.",
+    stat2: "33% longer average session.",
     tags: ["Creative Studio", "Portfolio", "Brand Identity", "Editorial Web"]
   },
   postevand: {
@@ -357,12 +359,14 @@ const projectDetails = {
     url: "https://postevand.com",
     description: "A publishing brand site centered on bold visual identity and media.",
     stat: "42% organic traffic increase.",
+    stat2: "29% increase in newsletter signups.",
     tags: ["Publishing", "Brand System", "Content Platform", "Campaign"]
   },
   residences: {
     year: "2025",
     description: "An architecture microsite for residential work and booking discovery.",
     stat: "29% increase in booking intent.",
+    stat2: "21% more contact form starts.",
     tags: ["Architecture", "Real Estate", "Microsite", "Lead Generation"]
   },
   "wow-page": {
@@ -370,6 +374,7 @@ const projectDetails = {
     year: "2025",
     description: "A launch campaign site for a playful digital product reveal.",
     stat: "36% more return visits after launch.",
+    stat2: "44% increase in share rate.",
     tags: ["Technology", "Campaign", "Launch", "Digital Product"]
   },
   visitors: {
@@ -377,12 +382,14 @@ const projectDetails = {
     url: "https://visitors.so",
     description: "A SaaS marketing page for revenue-focused analytics positioning.",
     stat: "42% increase in demo-qualified traffic.",
+    stat2: "38% improvement in trial conversion.",
     tags: ["SaaS", "Analytics", "Product Marketing", "Demand Generation"]
   },
   "healthy-together": {
     year: "2025",
     description: "A public-sector platform site for health and human services.",
     stat: "18% improvement in task completion.",
+    stat2: "31% increase in return visits.",
     tags: ["Healthcare", "Government", "Enterprise", "Service Design"]
   },
   loom: {
@@ -390,6 +397,7 @@ const projectDetails = {
     url: "https://loom.com",
     description: "A collaboration product page for async video communication.",
     stat: "27% lift in trial-start conversion.",
+    stat2: "22% increase in feature page depth.",
     tags: ["SaaS", "Collaboration", "Product Launch", "B2B Marketing"]
   },
   "linear-release": {
@@ -397,18 +405,21 @@ const projectDetails = {
     url: "https://linear.app",
     description: "A release campaign site for a software product launch.",
     stat: "34% increase in feature exploration.",
+    stat2: "41% increase in changelog subscribers.",
     tags: ["Software", "Product Launch", "Developer Tools", "Brand Campaign"]
   },
   "spring-summer": {
     year: "2025",
     description: "A fashion campaign page built around seasonal collection storytelling.",
     stat: "22% increase in collection click-through.",
+    stat2: "17% increase in average order value.",
     tags: ["Fashion", "Campaign", "Ecommerce", "Art Direction"]
   },
   "archival-lab": {
     year: "2025",
     description: "An experimental archive interface for cultural and creative material.",
     stat: "39% longer average browsing sessions.",
+    stat2: "27% increase in return visits.",
     tags: ["Arts & Culture", "Archive", "Interactive", "Editorial"]
   },
   "opal-camera": {
@@ -416,42 +427,49 @@ const projectDetails = {
     url: "https://opalcamera.com",
     description: "A hardware product page for a premium camera launch.",
     stat: "28% increase in preorder intent.",
+    stat2: "32% more time on product page.",
     tags: ["Consumer Tech", "Hardware", "Ecommerce", "Product Launch"]
   },
   "studio-xxxxi": {
     year: "2025",
     description: "An interior studio portfolio for spatial design and hospitality work.",
     stat: "33% increase in project inquiries.",
+    stat2: "28% more portfolio case views.",
     tags: ["Interior Design", "Hospitality", "Portfolio", "Brand Platform"]
   },
   materialist: {
     year: "2025",
     description: "An editorial platform for contemporary art and design criticism.",
     stat: "41% increase in article depth scrolls.",
+    stat2: "35% increase in subscription starts.",
     tags: ["Arts & Culture", "Editorial", "Publishing", "Content Platform"]
   },
   savoirfaire: {
     year: "2025",
     description: "A hospitality site for a restaurant and experience-led brand.",
     stat: "26% increase in reservation starts.",
+    stat2: "19% increase in average booking value.",
     tags: ["Hospitality", "Restaurant", "Brand Site", "Experience Design"]
   },
   few: {
     year: "2025",
     description: "A lean studio portfolio for selected creative and digital work.",
     stat: "21% lift in contact-page visits.",
+    stat2: "29% increase in case study reads.",
     tags: ["Creative Studio", "Portfolio", "Brand Identity", "Web Design"]
   },
   kons: {
     year: "2025",
     description: "A brand studio site for identity systems and digital campaigns.",
     stat: "30% increase in case study completion.",
+    stat2: "25% more RFP submissions.",
     tags: ["Brand Studio", "Identity", "Campaign", "Digital Design"]
   },
   "desktop-fm": {
     year: "2025",
     description: "A community site for music discovery and digital culture.",
     stat: "38% increase in repeat listening sessions.",
+    stat2: "44% increase in new registrations.",
     tags: ["Music", "Community", "Culture", "Digital Platform"]
   }
 };
@@ -1005,10 +1023,12 @@ function renderDetail(project) {
   };
   const detailTitle = detailData.title || project.title;
   document.title = detailTitle === "Primacy Index" ? "Primacy Index" : `${detailTitle} - Primacy Index`;
-  // split "31% increase in page engagement." → num + label
-  const statParts = detailData.stat.replace(/\.$/, "").match(/^(\d+%)\s+(.+)$/);
-  const statNum = statParts?.[1] ?? "";
-  const statText = statParts?.[2] ?? detailData.stat;
+  function parseStat(str) {
+    const m = str.replace(/\.$/, "").match(/^(\d+%)\s+(.+)$/);
+    return { num: m?.[1] ?? "", label: m?.[2] ?? str };
+  }
+  const s1 = parseStat(detailData.stat);
+  const s2 = detailData.stat2 ? parseStat(detailData.stat2) : null;
 
   const related = projects
     .filter((item) => item.id !== project.id)
@@ -1017,7 +1037,6 @@ function renderDetail(project) {
       (item) => `
         <a class="related-card" href="#/project/${item.id}" aria-label="${escapeHtml(item.title)} detail page">
           ${renderScreen(item, { badge: false })}
-          <span>${escapeHtml(item.title)}</span>
         </a>`
     )
     .join("");
@@ -1026,14 +1045,16 @@ function renderDetail(project) {
     ? `<a class="visit-button" href="${escapeHtml(detailData.url)}" target="_blank" rel="noopener noreferrer" aria-label="Visit ${escapeHtml(detailTitle)} website">Visit ${externalLinkIcon()}</a>`
     : "";
 
+  const statBlockHtml = (s) => `
+    <div class="detail-stat-block">
+      ${s.num ? `<span class="stat-num">${escapeHtml(s.num)}</span>` : ""}
+      <span class="stat-label">${escapeHtml(s.label)}</span>
+    </div>`;
+
   detail.innerHTML = `
     <div class="detail-header">
       <div class="detail-meta-row">
-        <span>${escapeHtml(project.issue)}</span>
-        <span class="detail-meta-dot"></span>
         <span>${escapeHtml(detailData.year)}</span>
-        <span class="detail-meta-dot"></span>
-        <span>${escapeHtml(project.category)}</span>
       </div>
       <div class="detail-title-row">
         <h1>${escapeHtml(detailTitle)}</h1>
@@ -1051,9 +1072,9 @@ function renderDetail(project) {
         </div>
       </div>
       <div class="detail-stat-col">
-        <div class="detail-stat-block">
-          ${statNum ? `<span class="stat-num">${escapeHtml(statNum)}</span>` : ""}
-          <span class="stat-label">${escapeHtml(statNum ? statText : detailData.stat)}</span>
+        <div class="detail-stats-grid">
+          ${statBlockHtml(s1)}
+          ${s2 ? statBlockHtml(s2) : ""}
         </div>
       </div>
     </div>
