@@ -338,6 +338,7 @@ const projects = [
   {
     id: "cornell-human-ecology",
     title: "Cornell Human Ecology",
+    image: "images/CHE.png",
     type: "poster",
     category: "Higher Education",
     issue: "FT. 723",
@@ -702,6 +703,13 @@ function renderScreen(project, options = {}) {
   const badge = options.badge === false ? "" : cameraIcon();
   const sponsor = sponsorPill(project);
   const style = screenStyle(project);
+
+  if (project.image) {
+    return `
+      <div class="screen screen-photo">
+        <img src="${escapeHtml(project.image)}" alt="${title}" loading="lazy" draggable="false">
+      </div>`;
+  }
 
   if (project.type === "hero") {
     return `
