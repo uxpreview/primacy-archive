@@ -339,6 +339,7 @@ const projects = [
     id: "cornell-human-ecology",
     title: "Cornell Human Ecology",
     image: "images/CHE.png",
+    video: "images/CHE.mp4",
     type: "poster",
     category: "Higher Education",
     issue: "FT. 723",
@@ -701,6 +702,15 @@ function renderScreen(project, options = {}) {
   const badge = options.badge === false ? "" : cameraIcon();
   const sponsor = sponsorPill(project);
   const style = screenStyle(project);
+
+  if (project.video && options.detail) {
+    return `
+      <div class="screen screen-photo">
+        <video autoplay loop muted playsinline>
+          <source src="${escapeHtml(project.video)}" type="video/mp4">
+        </video>
+      </div>`;
+  }
 
   if (project.image) {
     return `
@@ -1099,7 +1109,7 @@ function renderDetail(project) {
       </div>
     </div>
     <div class="detail-preview-wrap">
-      <div class="detail-preview">${renderScreen(project, { badge: false })}</div>
+      <div class="detail-preview">${renderScreen(project, { badge: false, detail: true })}</div>
     </div>
     <div class="detail-content">
       <div class="detail-desc-col">
