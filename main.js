@@ -1005,6 +1005,11 @@ function renderDetail(project) {
   };
   const detailTitle = detailData.title || project.title;
   document.title = detailTitle === "Primacy Index" ? "Primacy Index" : `${detailTitle} - Primacy Index`;
+  // split "31% increase in page engagement." → num + label
+  const statParts = detailData.stat.replace(/\.$/, "").match(/^(\d+%)\s+(.+)$/);
+  const statNum = statParts?.[1] ?? "";
+  const statText = statParts?.[2] ?? detailData.stat;
+
   const related = projects
     .filter((item) => item.id !== project.id)
     .slice(0, 12)
@@ -1022,18 +1027,33 @@ function renderDetail(project) {
     : "";
 
   detail.innerHTML = `
-    <div class="detail-stage">
-      <div class="detail-preview">${renderScreen(project, { badge: false })}</div>
-      <div class="detail-summary">
-        <span class="year">${escapeHtml(detailData.year)}</span>
+    <div class="detail-header">
+      <div class="detail-meta-row">
+        <span>${escapeHtml(project.issue)}</span>
+        <span class="detail-meta-dot"></span>
+        <span>${escapeHtml(detailData.year)}</span>
+        <span class="detail-meta-dot"></span>
+        <span>${escapeHtml(project.category)}</span>
+      </div>
+      <div class="detail-title-row">
         <h1>${escapeHtml(detailTitle)}</h1>
         ${visitButton}
-        <div class="detail-impact">
-          <p class="detail-description">${escapeHtml(detailData.description)}</p>
-          <p class="detail-stat">${escapeHtml(detailData.stat)}</p>
-        </div>
+      </div>
+    </div>
+    <div class="detail-preview-wrap">
+      <div class="detail-preview">${renderScreen(project, { badge: false })}</div>
+    </div>
+    <div class="detail-content">
+      <div class="detail-desc-col">
+        <p class="detail-description">${escapeHtml(detailData.description)}</p>
         <div class="detail-tags">
           ${detailData.tags.map((tag) => `<span class="chip">${escapeHtml(tag)}</span>`).join("")}
+        </div>
+      </div>
+      <div class="detail-stat-col">
+        <div class="detail-stat-block">
+          ${statNum ? `<span class="stat-num">${escapeHtml(statNum)}</span>` : ""}
+          <span class="stat-label">${escapeHtml(statNum ? statText : detailData.stat)}</span>
         </div>
       </div>
     </div>
